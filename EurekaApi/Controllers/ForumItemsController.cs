@@ -9,9 +9,9 @@ namespace EurekaApi.Controllers
     [ApiController]
     public class ForumItemsController : ControllerBase
     {
-        private readonly ForumContext _context;
+        private readonly EurekaDbContext _context;
 
-        public ForumItemsController(ForumContext context)
+        public ForumItemsController(EurekaDbContext context)
         {
             _context = context;
         }

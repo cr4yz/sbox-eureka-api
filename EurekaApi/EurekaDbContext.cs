@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using EurekaApi.Models;
 
-namespace EurekaApi.Models
+namespace EurekaApi
 {
-    public class ForumContext : DbContext
+    public class EurekaDbContext : DbContext
     {
 
-        public ForumContext(DbContextOptions<ForumContext> options)
+        public EurekaDbContext(DbContextOptions<EurekaDbContext> options)
             : base(options)
         {
 
