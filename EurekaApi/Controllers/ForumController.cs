@@ -1,34 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EurekaApi.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace EurekaApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ForumItemsController : ControllerBase
+    public class ForumController : ControllerBase
     {
         private readonly EurekaDbContext _context;
 
-        public ForumItemsController(EurekaDbContext context)
+        public ForumController(EurekaDbContext context)
         {
             _context = context;
+            _context.Database.EnsureCreated();
         }
 
         // GET: api/ForumItems
         [HttpGet]
-        [ServiceFilter(typeof(AdminCheckActionFilter))]
-        public async Task<ActionResult<IEnumerable<ForumItem>>> GetForumItems()
+        public async Task<ActionResult<IEnumerable<Forum>>> GetForumItems()
         {
-            return await _context.ForumItems.ToListAsync();
+            return await _context.Forums.ToListAsync();
         }
 
         // GET: api/ForumItems/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ForumItem>> GetForumItem(long id)
+        public async Task<ActionResult<Forum>> GetForumItem(long id)
         {
-            var forumItem = await _context.ForumItems.FindAsync(id);
+            var forumItem = await _context.Forums.FindAsync(id);
 
             if (forumItem == null)
             {
@@ -42,7 +41,7 @@ namespace EurekaApi.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [ServiceFilter(typeof(AdminCheckActionFilter))]
-        public async Task<IActionResult> PutForumItem(long id, ForumItem forumItem)
+        public async Task<IActionResult> PutForumItem(long id, Forum forumItem)
         {
             if (id != forumItem.Id)
             {
@@ -74,9 +73,9 @@ namespace EurekaApi.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ServiceFilter(typeof(AdminCheckActionFilter))]
-        public async Task<ActionResult<ForumItem>> PostForumItem(ForumItem forumItem)
+        public async Task<ActionResult<Forum>> PostForumItem(Forum forumItem)
         {
-            _context.ForumItems.Add(forumItem);
+            _context.Forums.Add(forumItem);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction( nameof(GetForumItem), new { id = forumItem.Id }, forumItem);
@@ -87,13 +86,13 @@ namespace EurekaApi.Controllers
         [ServiceFilter(typeof(AdminCheckActionFilter))]
         public async Task<IActionResult> DeleteForumItem(long id)
         {
-            var forumItem = await _context.ForumItems.FindAsync(id);
+            var forumItem = await _context.Forums.FindAsync(id);
             if (forumItem == null)
             {
                 return NotFound();
             }
 
-            _context.ForumItems.Remove(forumItem);
+            _context.Forums.Remove(forumItem);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -101,7 +100,7 @@ namespace EurekaApi.Controllers
 
         private bool ForumItemExists(long id)
         {
-            return _context.ForumItems.Any(e => e.Id == id);
+            return _context.Forums.Any(e => e.Id == id);
         }
     }
 }

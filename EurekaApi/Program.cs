@@ -9,7 +9,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<EurekaDbContext>(opt =>
 {
-    opt.UseInMemoryDatabase("ForumList");
+    opt.UseInMemoryDatabase("Forums");
 });
 
 builder.Services.AddScoped<AdminCheckActionFilter>(container =>
